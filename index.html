@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Provider Profiles (Editable Template)</title>
+    <style>
+      :root {
+        --bg: #f3f8f7;
+        --card: #fff;
+        --ink: #173b3d;
+        --mute: #617576;
+        --line: #d5e4e1;
+        --accent: #087f7b;
+        --accent-dark: #05635f;
+        --coral: #e76f51;
+        --sun: #f5b942;
+        --soft: #e3f5f1;
+        --shadow: 0 3px 10px rgba(23, 59, 61, 0.08);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          15px/1.55 system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+      }
+      h1,
+      h2,
+      h3,
+      button,
+      .tabs,
+      .meta,
+      label {
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+      }
+      .bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem max(1.25rem, calc((100% - 1100px) / 2));
+        background: rgba(255, 255, 255, 0.97);
+        border-bottom: 1px solid var(--line);
+        box-shadow: 0 1px 3px rgba(23, 59, 61, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+      .tabs {
+        display: flex;
+        gap: 0.375rem;
+        flex-wrap: wrap;
+      }
+      .tab,
+      .btn {
+        border: 1px solid var(--line);
+        background: var(--card);
+        color: var(--ink);
+        padding: 0.5rem 0.9rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease,
+          color 0.15s ease;
+      }
+      .tab:hover,
+      .btn:hover {
+        border-color: #8dc1ba;
+        background: #f2fbf8;
+      }
+      .tab[aria-selected="true"] {
+        background: var(--soft);
+        color: var(--accent-dark);
+        border-color: #8dcfc5;
+      }
+      .btn.primary {
+        background: var(--coral);
+        color: #fff;
+        border-color: var(--coral);
+      }
+      .btn.primary:hover {
+        background: var(--accent-dark);
+        border-color: var(--accent-dark);
+      }
+      button:focus-visible {
+        outline: 3px solid #f5b942;
+        outline-offset: 2px;
+      }
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 4rem;
+      }
+      .profile {
+        display: none;
+      }
+      .profile.on {
+        display: block;
+      }
+      .head {
+        padding: 1.5rem;
+        background: linear-gradient(120deg, #fff 0%, #fff 72%, #e8f7f2 100%);
+        border: 1px solid var(--line);
+        border-top: 3px solid var(--coral);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+      }
+      .head h1 {
+        margin: 0;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        line-height: 1.25;
+        letter-spacing: 0;
+      }
+      .spec {
+        color: var(--accent);
+        font-weight: 700;
+        margin: 0.25rem 0;
+      }
+      .badge {
+        display: inline-block;
+        background: var(--soft);
+        color: var(--accent-dark);
+        padding: 0.2rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+      section {
+        margin-top: 2rem;
+      }
+      section h2 {
+        font-size: 1.1rem;
+        margin: 0 0 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--line);
+        letter-spacing: 0;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+      .box {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: var(--shadow);
+      }
+      .box h3 {
+        margin: 0 0 0.35rem;
+        font-size: 0.95rem;
+        color: var(--mute);
+      }
+      .rev {
+        background: #fffdf8;
+        border: 1px solid #eadfca;
+        border-left: 4px solid var(--sun);
+        padding: 0.85rem 1rem;
+        margin: 0.75rem 0;
+        border-radius: 6px;
+        box-shadow: var(--shadow);
+        position: relative;
+      }
+      .rev .x {
+        position: absolute;
+        top: 0.4rem;
+        right: 0.5rem;
+        display: none;
+      }
+      .edit .rev .x {
+        display: block;
+      }
+      .edit [contenteditable] {
+        outline: 1px dashed #8dcfc5;
+        outline-offset: 2px;
+        border-radius: 3px;
+        background: #f4fbf9;
+      }
+      .edit [contenteditable]:focus {
+        outline: 2px solid var(--accent);
+      }
+      .noedit,
+      .adds {
+        display: none;
+      }
+      .edit .adds {
+        display: inline-block;
+      }
+      .stars {
+        color: #d97706;
+        letter-spacing: 2px;
+      }
+      footer {
+        margin-top: 2.5rem;
+        color: var(--mute);
+        font-size: 0.85rem;
+        font-family: system-ui, sans-serif;
+      }
+      @media (max-width: 640px) {
+        .bar {
+          align-items: stretch;
+        }
+        .bar > div:last-child {
+          display: flex;
+        }
+        .bar > div:last-child .btn {
+          flex: 1;
+        }
+        main {
+          padding-top: 1rem;
+        }
+        .head {
+          padding: 1.25rem;
+        }
+      }
+      @media print {
+        .bar,
+        .adds,
+        .x {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="edit">
+    <div class="bar">
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div>
+        <button class="btn" id="toggle">Preview</button>
+        <button class="btn primary" id="save">Download page</button>
+      </div>
+    </div>
+    <main id="main"></main>
+    <script>
+      const P = [
+        {
+          name: "Mohammad Muhsin Chisti",
+          cred: "MD",
+          spec: "Hematology, Medical Oncology",
+          phone: "(248) 964-6111",
+        },
+        {
+          name: "Sara S Riaz",
+          cred: "[Credentials]",
+          spec: "[Specialty]",
+          phone: "[Phone]",
+        },
+        {
+          name: "Mohammed S Shaik",
+          cred: "[Credentials]",
+          spec: "[Specialty]",
+          phone: "[Phone]",
+        },
+      ];
+      const rev = (t) =>
+        `<div class="rev"><button class="btn x" title="Delete review">Delete</button><div class="stars" aria-hidden="true">★★★★★</div><div contenteditable="true">${t}</div></div>`;
+      const box = (h, l) =>
+        `<div class="box"><h3>${h}</h3><div contenteditable="true">${l}</div></div>`;
+      const tabs = document.getElementById("tabs"),
+        main = document.getElementById("main");
+      P.forEach((p, i) => {
+        tabs.insertAdjacentHTML(
+          "beforeend",
+          `<button class="tab" role="tab" data-i="${i}" aria-selected="${i == 0}">${p.name.split(" ").slice(-1)[0]}</button>`,
+        );
+        main.insertAdjacentHTML(
+          "beforeend",
+          `<article class="profile ${i == 0 ? "on" : ""}" id="p${i}">
+ <div class="head"><h1><span contenteditable="true">${p.name}</span>, <span contenteditable="true">${p.cred}</span></h1>
+ <div class="spec" contenteditable="true">${p.spec}</div>
+ <span class="badge" contenteditable="true">Accepting New Patients</span>
+ <p class="meta">Need help scheduling? Call <span contenteditable="true">${p.phone}</span></p></div>
+ <section><h2>Highlights</h2><div class="grid">
+  ${box("Age groups seen", "Adult 18-64<br>Older Adult 65+")}
+  ${box("Languages", "English")}
+  ${box("Gender", "[Gender]")}
+  ${box("Affiliations", "[Hospital / affiliation]")}</div></section>
+ <section><h2>About ${p.name}</h2><div contenteditable="true"><p>[Write the provider biography here. Click any text in Edit mode to change it.]</p></div></section>
+ <section><h2>Locations</h2>${box("Practice", "[Practice name]<br>[Address]<br>Phone: [Phone] &nbsp; Fax: [Fax]")}</section>
+ <section><h2>Education and board certification</h2><div class="grid">
+  ${box("Education", "Medical School: [School], [Year]<br>Residency: [Hospital], [Year]<br>Fellowship: [Program], [Year]")}
+  ${box("Board certifications", "[Board]: [Year]")}</div></section>
+ <section><h2>Patient reviews</h2><div class="revs">${rev("[Paste or write a review here.]")}${rev("[Paste or write a review here.]")}</div>
+  <button class="btn adds addrev">+ Add review</button></section>
+ <footer contenteditable="true">Template for coursework. Replace all bracketed text with your own content.</footer>
+ </article>`,
+        );
+      });
+      tabs.onclick = (e) => {
+        const b = e.target.closest(".tab");
+        if (!b) return;
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) => t.setAttribute("aria-selected", t === b));
+        document
+          .querySelectorAll(".profile")
+          .forEach((a, i) => a.classList.toggle("on", i == b.dataset.i));
+      };
+      main.onclick = (e) => {
+        if (e.target.classList.contains("x")) e.target.closest(".rev").remove();
+        if (e.target.classList.contains("addrev"))
+          e.target.previousElementSibling.insertAdjacentHTML(
+            "beforeend",
+            rev("New review text"),
+          );
+      };
+      const tg = document.getElementById("toggle");
+      function setEdit(on) {
+        document.body.classList.toggle("edit", on);
+        document
+          .querySelectorAll("[contenteditable]")
+          .forEach((el) => (el.contentEditable = on));
+        tg.textContent = on ? "Preview" : "Edit";
+      }
+      tg.onclick = () => setEdit(!document.body.classList.contains("edit"));
+      document.getElementById("save").onclick = () => {
+        const was = document.body.classList.contains("edit");
+        const html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+        a.download = "provider-profiles.html";
+        a.click();
+      };
+    </script>
+  </body>
+</html>
