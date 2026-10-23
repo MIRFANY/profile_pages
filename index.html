@@ -1,342 +1,122 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Provider Profiles (Editable Template)</title>
-    <style>
-      :root {
-        --bg: #f3f8f7;
-        --card: #fff;
-        --ink: #173b3d;
-        --mute: #617576;
-        --line: #d5e4e1;
-        --accent: #087f7b;
-        --accent-dark: #05635f;
-        --coral: #e76f51;
-        --sun: #f5b942;
-        --soft: #e3f5f1;
-        --shadow: 0 3px 10px rgba(23, 59, 61, 0.08);
-      }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--ink);
-        font:
-          15px/1.55 system-ui,
-          -apple-system,
-          "Segoe UI",
-          sans-serif;
-      }
-      h1,
-      h2,
-      h3,
-      button,
-      .tabs,
-      .meta,
-      label {
-        font-family:
-          system-ui,
-          -apple-system,
-          "Segoe UI",
-          sans-serif;
-      }
-      .bar {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.75rem max(1.25rem, calc((100% - 1100px) / 2));
-        background: rgba(255, 255, 255, 0.97);
-        border-bottom: 1px solid var(--line);
-        box-shadow: 0 1px 3px rgba(23, 59, 61, 0.05);
-        position: sticky;
-        top: 0;
-        z-index: 5;
-      }
-      .tabs {
-        display: flex;
-        gap: 0.375rem;
-        flex-wrap: wrap;
-      }
-      .tab,
-      .btn {
-        border: 1px solid var(--line);
-        background: var(--card);
-        color: var(--ink);
-        padding: 0.5rem 0.9rem;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 0.875rem;
-        font-weight: 600;
-        transition:
-          background 0.15s ease,
-          border-color 0.15s ease,
-          color 0.15s ease;
-      }
-      .tab:hover,
-      .btn:hover {
-        border-color: #8dc1ba;
-        background: #f2fbf8;
-      }
-      .tab[aria-selected="true"] {
-        background: var(--soft);
-        color: var(--accent-dark);
-        border-color: #8dcfc5;
-      }
-      .btn.primary {
-        background: var(--coral);
-        color: #fff;
-        border-color: var(--coral);
-      }
-      .btn.primary:hover {
-        background: var(--accent-dark);
-        border-color: var(--accent-dark);
-      }
-      button:focus-visible {
-        outline: 3px solid #f5b942;
-        outline-offset: 2px;
-      }
-      main {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 2rem 1.25rem 4rem;
-      }
-      .profile {
-        display: none;
-      }
-      .profile.on {
-        display: block;
-      }
-      .head {
-        padding: 1.5rem;
-        background: linear-gradient(120deg, #fff 0%, #fff 72%, #e8f7f2 100%);
-        border: 1px solid var(--line);
-        border-top: 3px solid var(--coral);
-        border-radius: 8px;
-        box-shadow: var(--shadow);
-      }
-      .head h1 {
-        margin: 0;
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        line-height: 1.25;
-        letter-spacing: 0;
-      }
-      .spec {
-        color: var(--accent);
-        font-weight: 700;
-        margin: 0.25rem 0;
-      }
-      .badge {
-        display: inline-block;
-        background: var(--soft);
-        color: var(--accent-dark);
-        padding: 0.2rem 0.65rem;
-        border-radius: 999px;
-        font-size: 0.8rem;
-        font-weight: 600;
-      }
-      section {
-        margin-top: 2rem;
-      }
-      section h2 {
-        font-size: 1.1rem;
-        margin: 0 0 0.75rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid var(--line);
-        letter-spacing: 0;
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1rem;
-      }
-      .box {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        padding: 1rem;
-        box-shadow: var(--shadow);
-      }
-      .box h3 {
-        margin: 0 0 0.35rem;
-        font-size: 0.95rem;
-        color: var(--mute);
-      }
-      .rev {
-        background: #fffdf8;
-        border: 1px solid #eadfca;
-        border-left: 4px solid var(--sun);
-        padding: 0.85rem 1rem;
-        margin: 0.75rem 0;
-        border-radius: 6px;
-        box-shadow: var(--shadow);
-        position: relative;
-      }
-      .rev .x {
-        position: absolute;
-        top: 0.4rem;
-        right: 0.5rem;
-        display: none;
-      }
-      .edit .rev .x {
-        display: block;
-      }
-      .edit [contenteditable] {
-        outline: 1px dashed #8dcfc5;
-        outline-offset: 2px;
-        border-radius: 3px;
-        background: #f4fbf9;
-      }
-      .edit [contenteditable]:focus {
-        outline: 2px solid var(--accent);
-      }
-      .noedit,
-      .adds {
-        display: none;
-      }
-      .edit .adds {
-        display: inline-block;
-      }
-      .stars {
-        color: #d97706;
-        letter-spacing: 2px;
-      }
-      footer {
-        margin-top: 2.5rem;
-        color: var(--mute);
-        font-size: 0.85rem;
-        font-family: system-ui, sans-serif;
-      }
-      @media (max-width: 640px) {
-        .bar {
-          align-items: stretch;
-        }
-        .bar > div:last-child {
-          display: flex;
-        }
-        .bar > div:last-child .btn {
-          flex: 1;
-        }
-        main {
-          padding-top: 1rem;
-        }
-        .head {
-          padding: 1.25rem;
-        }
-      }
-      @media print {
-        .bar,
-        .adds,
-        .x {
-          display: none !important;
-        }
-      }
-    </style>
-  </head>
-  <body class="edit">
-    <div class="bar">
-      <div class="tabs" role="tablist" id="tabs"></div>
-      <div>
-        <button class="btn" id="toggle">Preview</button>
-        <button class="btn primary" id="save">Download page</button>
-      </div>
-    </div>
-    <main id="main"></main>
-    <script>
-      const P = [
-        {
-          name: "Mohammad Muhsin Chisti",
-          cred: "MD",
-          spec: "Hematology, Medical Oncology",
-          phone: "(248) 964-6111",
-        },
-        {
-          name: "Sara S Riaz",
-          cred: "[Credentials]",
-          spec: "[Specialty]",
-          phone: "[Phone]",
-        },
-        {
-          name: "Mohammed S Shaik",
-          cred: "[Credentials]",
-          spec: "[Specialty]",
-          phone: "[Phone]",
-        },
-      ];
-      const rev = (t) =>
-        `<div class="rev"><button class="btn x" title="Delete review">Delete</button><div class="stars" aria-hidden="true">★★★★★</div><div contenteditable="true">${t}</div></div>`;
-      const box = (h, l) =>
-        `<div class="box"><h3>${h}</h3><div contenteditable="true">${l}</div></div>`;
-      const tabs = document.getElementById("tabs"),
-        main = document.getElementById("main");
-      P.forEach((p, i) => {
-        tabs.insertAdjacentHTML(
-          "beforeend",
-          `<button class="tab" role="tab" data-i="${i}" aria-selected="${i == 0}">${p.name.split(" ").slice(-1)[0]}</button>`,
-        );
-        main.insertAdjacentHTML(
-          "beforeend",
-          `<article class="profile ${i == 0 ? "on" : ""}" id="p${i}">
- <div class="head"><h1><span contenteditable="true">${p.name}</span>, <span contenteditable="true">${p.cred}</span></h1>
- <div class="spec" contenteditable="true">${p.spec}</div>
- <span class="badge" contenteditable="true">Accepting New Patients</span>
- <p class="meta">Need help scheduling? Call <span contenteditable="true">${p.phone}</span></p></div>
- <section><h2>Highlights</h2><div class="grid">
-  ${box("Age groups seen", "Adult 18-64<br>Older Adult 65+")}
-  ${box("Languages", "English")}
-  ${box("Gender", "[Gender]")}
-  ${box("Affiliations", "[Hospital / affiliation]")}</div></section>
- <section><h2>About ${p.name}</h2><div contenteditable="true"><p>[Write the provider biography here. Click any text in Edit mode to change it.]</p></div></section>
- <section><h2>Locations</h2>${box("Practice", "[Practice name]<br>[Address]<br>Phone: [Phone] &nbsp; Fax: [Fax]")}</section>
- <section><h2>Education and board certification</h2><div class="grid">
-  ${box("Education", "Medical School: [School], [Year]<br>Residency: [Hospital], [Year]<br>Fellowship: [Program], [Year]")}
-  ${box("Board certifications", "[Board]: [Year]")}</div></section>
- <section><h2>Patient reviews</h2><div class="revs">${rev("[Paste or write a review here.]")}${rev("[Paste or write a review here.]")}</div>
-  <button class="btn adds addrev">+ Add review</button></section>
- <footer contenteditable="true">Template for coursework. Replace all bracketed text with your own content.</footer>
- </article>`,
-        );
-      });
-      tabs.onclick = (e) => {
-        const b = e.target.closest(".tab");
-        if (!b) return;
-        document
-          .querySelectorAll(".tab")
-          .forEach((t) => t.setAttribute("aria-selected", t === b));
-        document
-          .querySelectorAll(".profile")
-          .forEach((a, i) => a.classList.toggle("on", i == b.dataset.i));
-      };
-      main.onclick = (e) => {
-        if (e.target.classList.contains("x")) e.target.closest(".rev").remove();
-        if (e.target.classList.contains("addrev"))
-          e.target.previousElementSibling.insertAdjacentHTML(
-            "beforeend",
-            rev("New review text"),
-          );
-      };
-      const tg = document.getElementById("toggle");
-      function setEdit(on) {
-        document.body.classList.toggle("edit", on);
-        document
-          .querySelectorAll("[contenteditable]")
-          .forEach((el) => (el.contentEditable = on));
-        tg.textContent = on ? "Preview" : "Edit";
-      }
-      tg.onclick = () => setEdit(!document.body.classList.contains("edit"));
-      document.getElementById("save").onclick = () => {
-        const was = document.body.classList.contains("edit");
-        const html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(new Blob([html], { type: "text/html" }));
-        a.download = "provider-profiles.html";
-        a.click();
-      };
-    </script>
-  </body>
-</html>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cancer Care Associates, P.C. | Hematology &amp; Oncology in Royal Oak, MI</title>
+<meta name="description" content="Cancer Care Associates, P.C. provides hematology and oncology care in Royal Oak, Michigan. Call 248-551-6900.">
+<style>
+:root{--navy:#12304a;--teal:#0f7c86;--teal-d:#0b5f67;--sky:#eaf4f6;--ink:#1d2b36;--mute:#5a6b77;--line:#dbe5ea;--bg:#fff;--gold:#e0a100}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.65 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+a{color:var(--teal-d)}img{max-width:100%}
+.wrap{max-width:1100px;margin:0 auto;padding:0 1.25rem}
+header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);z-index:10}
+.nav{display:flex;align-items:center;justify-content:space-between;min-height:68px;gap:1rem;flex-wrap:wrap}
+.logo{font-weight:700;color:var(--navy);font-size:1.15rem;text-decoration:none}
+.logo img{height:62px;width:auto;display:block}
+nav a{margin-left:1.2rem;text-decoration:none;color:var(--ink);font-weight:500;font-size:.95rem}
+nav a:hover{color:var(--teal)}
+.btn{display:inline-block;background:var(--teal);color:#fff!important;padding:.75rem 1.4rem;border-radius:6px;text-decoration:none;font-weight:600}
+.btn:hover{background:var(--teal-d)}
+.btn.ghost{background:transparent;border:2px solid #fff}
+.hero{background:linear-gradient(135deg,rgba(18,48,74,.92),rgba(27,74,104,.85)),url(images/hero.jpg) center/cover,#12304a;color:#fff;padding:5rem 0}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.15;margin:0 0 1rem;max-width:18ch}
+.hero p{max-width:55ch;font-size:1.1rem;opacity:.92}
+.hero .btn{margin:.5rem .75rem 0 0}
+section{padding:4rem 0}
+section.alt{background:var(--sky)}
+h2{font-size:1.9rem;color:var(--navy);margin:0 0 .4rem}
+.lead{color:var(--mute);max-width:60ch;margin:0 0 2rem}
+.grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:1.4rem}
+.facts{padding-left:1.1rem;margin:.6rem 0 0;font-size:.92rem;color:var(--mute)}.facts li{margin:.2rem 0}.facts b{color:var(--ink)}
+.card h3{margin:.2rem 0 .3rem;color:var(--navy);font-size:1.1rem}
+.ico{position:relative;width:44px;height:44px;border-radius:50%;background:var(--sky);color:var(--teal);display:grid;place-items:center;font-weight:700;overflow:hidden;margin-bottom:.6rem}.ico::before{content:attr(data-i)}.ico.has{width:100%;height:150px;border-radius:8px}.ico.has::before{content:none}.ico img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo{position:relative;width:150px;height:150px;border-radius:12px;background:var(--navy);color:#fff;display:grid;place-items:center;overflow:hidden;margin-bottom:1rem}.photo::before{content:attr(data-i);font-size:2.2rem;font-weight:600}.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.role{color:var(--teal-d);font-weight:600;font-size:.92rem}
+.stars{color:var(--gold);letter-spacing:2px}
+.rev p{margin:.5rem 0 .8rem}.rev small{color:var(--mute)}
+.revbar{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.revbar button{border:1px solid var(--line);background:#fff;padding:.4rem .9rem;border-radius:99px;cursor:pointer;font:inherit;font-size:.9rem}
+.revbar button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.more{margin-top:1.5rem;text-align:center}
+.more button{border:2px solid var(--teal);color:var(--teal-d);background:#fff;padding:.6rem 1.4rem;border-radius:6px;font-weight:600;cursor:pointer;font:inherit}
+footer{background:var(--navy);color:#cfdde6;padding:2.5rem 0;font-size:.9rem}
+footer a{color:#fff}
+button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+@media (max-width:640px){nav a{margin:0 .8rem 0 0}.nav{padding:.6rem 0}}
+</style></head>
+<body>
+<header><div class="wrap nav">
+ <a class="logo" href="#top" aria-label="Cancer Care Associates home"><img src="images/logo.png" alt="Cancer Care Associates"></a>
+ <nav><a href="#services">Services</a><a href="#doctors">Our Doctors</a><a href="#reviews">Patient Reviews</a><a href="#contact">Contact</a></nav>
+ <a class="btn" href="tel:+12485516900">Call 248-551-6900</a>
+</div></header>
+
+<div class="hero" id="top"><div class="wrap">
+ <h1>Cancer and blood disorder care, close to home.</h1>
+ <p>Cancer Care Associates, P.C. provides hematology and oncology care for patients and families in Royal Oak and the surrounding communities.</p>
+ <a class="btn" href="#contact">Request an appointment</a><a class="btn ghost" href="#doctors">Meet our doctors</a>
+</div></div>
+
+<section id="services"><div class="wrap">
+ <h2>Our services</h2><p class="lead">Diagnosis, treatment and support for cancer and blood disorders.</p>
+ <div class="grid">
+  <div class="card"><div class="ico" data-i="1"><img src="images/oncology.jpg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></div><h3>Medical Oncology</h3><p>Evaluation and treatment of solid tumors and blood cancers, including chemotherapy and targeted therapy.</p></div>
+  <div class="card"><div class="ico" data-i="2"><img src="images/hematology.jpg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></div><h3>Hematology</h3><p>Diagnosis and management of anemia, clotting and bleeding disorders, and other blood conditions.</p></div>
+  <div class="card"><div class="ico" data-i="3"><img src="images/infusion.jpg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></div><h3>Infusion Therapy</h3><p>Treatment delivered in a comfortable setting by an experienced care team.</p></div>
+  <div class="card"><div class="ico" data-i="4"><img src="images/support.jpg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></div><h3>Supportive Care</h3><p>Support for patients and families throughout treatment and recovery.</p></div>
+ </div>
+</div></section>
+
+<section class="alt" id="doctors"><div class="wrap">
+ <h2>Meet our doctors</h2><p class="lead">Experienced physicians focused on every patient's care.</p>
+ <div class="grid">
+  <div class="card"><div class="photo" data-i="MC"><img src="images/chisti.jpg" alt="Dr. Mohammad Muhsin Chisti" loading="lazy" onerror="this.remove()"></div><h3>Mohammad Muhsin Chisti, MD</h3><div class="role">Hematology and Medical Oncology</div>
+   <p>Dr. Chisti is an Associate Professor of Internal Medicine at Oakland University William Beaumont School of Medicine, where he teaches medical students and residents. He has taken part in many clinical trials in breast, gastrointestinal and prostate cancers and multiple myeloma.</p>
+   <ul class="facts"><li><b>Medical school:</b> Government Medical College, Srinagar, India</li><li><b>Residency:</b> Internal Medicine, University at Buffalo</li><li><b>Fellowship:</b> Hematology and Oncology, William Beaumont Hospital</li><li><b>Board certified:</b> Internal Medicine, Medical Oncology, Hematology</li><li><b>Recognition:</b> Hour Detroit Top Doc in Hematology and Oncology, 2018 to 2023</li><li><b>Memberships:</b> ASCO, ASH, American College of Physicians (Fellow)</li></ul>
+  </div>
+  <div class="card"><div class="photo" data-i="SR"><img src="images/riaz.jpg" alt="Dr. Sara S. Riaz" loading="lazy" onerror="this.remove()"></div><h3>Sara S. Riaz, [Credentials]</h3><div class="role">[Specialty]</div><p>[Short bio, education, board certification.]</p></div>
+  <div class="card"><div class="photo" data-i="MS"><img src="images/shaik.jpg" alt="Dr. Mohammed S. Shaik" loading="lazy" onerror="this.remove()"></div><h3>Mohammed S. Shaik, [Credentials]</h3><div class="role">[Specialty]</div><p>[Short bio, education, board certification.]</p></div>
+ </div>
+</div></section>
+
+<section id="reviews"><div class="wrap">
+ <h2>What our patients say</h2>
+ <p class="lead">Reviews shared by patients. <span id="avg"></span></p>
+ <div class="revbar" id="filters"></div>
+ <div class="grid" id="revgrid"></div>
+ <div class="more"><button id="more">Show more reviews</button></div>
+</div></section>
+
+<section class="alt" id="contact"><div class="wrap">
+ <h2>Contact and locations</h2><p class="lead">[Hours: Mon to Fri, 8 am to 5 pm]</p>
+ <div class="grid">
+  <div class="card"><h3>Cancer Care Associates, P.C.</h3><p>3577 W. 13 Mile Rd, Suite 404<br>Royal Oak, MI 48073<br>Phone: <a href="tel:+12485516900">248-551-6900</a><br>Fax: 248-551-6909</p><p><a href="https://www.google.com/maps/search/?api=1&query=3577+W+13+Mile+Rd+Suite+404+Royal+Oak+MI+48073" target="_blank" rel="noopener">Get directions</a></p></div>
+  <div class="card"><h3>New patients</h3><p>[Insurance accepted, how to refer, what to bring.]</p><a class="btn" href="tel:+12485516900">Call to schedule</a></div>
+ </div>
+</div></section>
+
+<footer><div class="wrap">&copy; <span id="yr"></span> Cancer Care Associates, P.C. This website does not provide medical advice. In an emergency, call 911.</div></footer>
+
+<script>
+/* ====== EDIT REVIEWS HERE ======
+   Add one object per review. Only add reviews you have permission to use.
+   rating: 1-5. Keep names to first name + initial for privacy. */
+const REVIEWS=[{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I really like Dr. Chisti. Unfortunately the lab did not do all the tests that I had come in for, so the appointment was not completely satisfactory (he was unable to see the results & talk about them while i was there, but not his fault). Dr. Chisti had additional blood drawn and I trust that he will follow up as needed. Wait times are pretty long, even if I get into a room pretty quickly. I appreciate the attention he gives to each patient, but I wish things could be timed a little differently. I only come once a year, so it is certainly worth it to see him."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I have been blessed to have him treat me in my cancer journey"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti truly cares about his patients"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti really care about the well-being of his patients."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"From his first visit in the hospital, I felt a spirit of kindness and concern and believed he would take care of me."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"One of the best Dr's I have had. Very compassionate"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Absolutely the best! He not only has excellent knowledge of his profession. He also has a caring heart, and it shows in his demeanor while practicing his craft. His patients are in great hands."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is an excellent Doctor, that truly cares for his patients. I think this is a difficult field to be in, he is dealing with patients with very serious illnesses. I’m glad he took over Dr. Prem Khilanani’s practice after he retired, Dr. Chisti has all the same good traits that Dr.Prem had and I know I’m in great hands!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Christi listened and provided thorough explanations"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Took a bit for the office to get my prescription in, but overall very good experience."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr. Christi is very knowledgeable and cares about my health!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Do have to wait awhile to see the doctor"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"we work to Best with the blood problems I have, and know where the plan leads."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Always pleasant , Answers questions and concerns to Wife as well as patient..."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti is a gem very compassionate and informative"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is a very busy Doctor, but, makes you feel as you are his only patient. He is always well read in my case before he sees me! Kudos to him. One in a million Doctor. I’m sure his is a scary practice, with all very serious cases!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I’m thankful he’s my oncologist"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He knows all info regarding my health and let's me know what to do."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Very knowledgeable, offers the best of care"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"In a bad situation he has given me hope"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Very happy with my care from Dr Chisti"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He cares about your health and keeps up on your progress."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Always available. Had excellent staff who obviously cared about patients"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He’s carrying and thorough"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He’s a very good doctor. You can’t find a doctors like that."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Very positive and knowledgeable person"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Friendly, caring, professional and an amazing doctor."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Very thorough and professional"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is wonderful ,he is very great with a wonderfu bedside matter.He is so carring."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Pleasant, helpful, patient."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I love my visits with Dr Chisti, he has a wonderful bedside manner which show he cares and wants the best for me. Thank you Dr Chisti for everything!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"The man is meticulous and extremely empathetic to his patients and their needs! He goes the extra mile every time to make sure he does not miss a thing! This man is so well loved and so needed by so many this Dr is phenomenal and needs a much bigger office! His patients are having a hard time getting in to see him. He doesn’t need less patients. He needs more room, a bigger office!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Mohammad Chisti is very caring, thurough and empathetic!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Excellent caring physician."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"The reason that I gave only a fair rating for the amount of trust I have in this practice is because this was my first experience. I'm sure as my experience with Dr Chisti increases, my trust will also increase."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr. Chisti is very thorough and VERY KIND."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Caring, compassionate and very thorough"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Very knowledgeable and thorough"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Courteous, listens to your concerns, honest answers"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"You the best doctor I ever had that’s tentative to my care thank you from the bottom of my heart you save my life in 2017 n im forever grateful for you my god continue to bless you always with love always!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I worry a lot and he calms my anxiety."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Cood Dr every thing I understood"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I feel like he takes good care of me"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Very comfortable appointment with Dr Chisti"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is kind and takes time with each patient. I've never felt rushed or pressured to decide on treatment choices."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr. Chisti truly seems to care about his patients and takes time with me to explain everything"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Knowledgeable, Caring...Excellent! Exceptional. The Best Ever!!!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Keep being you and being there for your patients. Your gentle spirit and compassion and smiles adds much peace to an overwhelming adjustment."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is an excellent physician!!!!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"So happy to have Dr. Chisti take care of my medical needs"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I love him. I wish all Doctors could be like Dr Christi. He takes time to answer all your questions."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Always cheerful, willing to listen"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Muhammad treats me like family"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr. Chisti is a very caring doctor We have all our trust in him! We are so grateful to have him taking care of us! His staff is also very caring!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I feel comfort in knowing that Dr. Chisti reads the latest research studies on chemo, etc. He then shares the findings so that I can understand them."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr. Chisti always listens and eases my worries. He explains why I do have to worry in a way that calms me."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I love my oncologist he is very thoughtful of your well being"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Needed more information about CT scan."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He was very proactive in scheduling testing for my treatments and communicated well with me the results"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Amazing. He has always gone above and beyond to provide me with excellent care. He is a truly good doctor and man who really cares about his patients."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is a kind and caring doctor."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He should care about his patients' time as much as he cares about his own."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Took time to explain and talk with me about the way forward"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He was easy to talk to and not rigid in thinking, but later he decided to run things by a \"tumor board\" so I can't comment on overall care or my health plan."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Great Dr.-- Caring ,excellent"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr. Chisti was very kind and professional."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti is an outstanding doctor!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He’s extremely kind and knowledgeable. He helped me feel comfortable with the course of action."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Kind. Thorough. Unhurried."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He was very easy to understand and explain things to me that no other doctor had before"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is the very best he make sure he listens to you and he makes sure you’re cared for and you get the proper care that you need to feel safe"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I love Dr. Chisti. He is so kind and I trust him with my life"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti requested follow up test to determine what was causing the change in my bloodwork"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He saved my life and is an excellent doctor with a professional kind caregiving spirit!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"My only complaint is that the wait time to see the doctor is often long. Once I see him, he never makes me feel rushed, and I do appreciate that. But I wish the wait times were shorter."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti is knowledgeable, he cared about me the patient. He listened to all my concerns."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Very personable and caring"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I will continue to have Dr. Chisti as my Hemotologist. If he leaves Corewell, I will follow him!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I trust Doctor Chisti to look out for my best interest. That really important to myself and my family."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Perhaps best doctor in my 81 years."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He explains things in a manner you can understand. And he does show that he cares about his patients."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is excellent at relieving worry knowing he is taking care of you"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti answered all my questions and consents in a clear and reassuring manner!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is one of the best doctors I’ve ever seen"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He’s great. Very caring & knowledgeable."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Caring, terrific bedside manner. Thorough and patient in explaining symptoms and method of cure."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He takes his time and answers all my Questions."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Love dr.chisti, we had a virtual phone appt which just turned into a regular appt as the software was not working and he kept apologizing and he answered all my questions even tho he had tech problems but still took his time for me"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is the best!!! Spends as much time with me as needed. I never feel rushed!!!!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is incredible not only as a physician but also as a human being. Feel blessed and grateful to be under his care."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Christi took his time and made sure all my questions were answered. I’m very happy with him."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He's not just a good doctor but also a pleasant man"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Although I know how truly busy Dr Chisti is, he never makes me feel rushed. I appreciate his exceptional care."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"The Dr he was so nice explained everything to me I like him a lot the way talking to me he make me comfortable thank you 🙏"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He's just a wonderful human being"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Listening and response to concerns were not rushed Easy to talk to Caring attitude much appreciated Explained medical terms for clear understanding Shared all procedures and test results compared to initial diagnosis Explained goals and purpose of test going forward Commendation Given for current stability"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is so caring about his patients.He listens to your questions and takes his time explaining to your questions .He is my favorite Doctor 🤪"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti is always caring and genuinely cares about my needs and concerns"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Great guy, great hemotologist!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Mohammad Chisti was very attentive and understanding and answered all my questions and I didnt feel rushed either! I look forward to my next visit!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He seems to care about getting as much info as necessary for us to make the best decision on treatment options."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"he’s the best you couldn’t ask more from a doctor"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Very concerned for my condition."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He’s my hero he saved my life over 8yrs ago and I will forever be grateful to him n his staff he’s and amazing Doctor one of my best ever love you Dr.Chisti if I could give you n award you have it because you deserve it job well deserved!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He’s a very good, thorough doctor. I feel he listens to me. I appreciate his knowledge of research."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I have been with Dr. Chisti for several years, he’s a good doctor."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I am most grateful that he is my Oncologist. He's warm, understanding and he cares. He takes good care of me."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I’ve been with dr Chisti for 6 years His experience along with his patience, compassion, and understanding has helped me through the most difficult times of my life."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is a good Dr and I believe he cares about his patients"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti is an excellent dotor. I feel fortunate to be his patient."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Very patient and answered questions that I had"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I feel comfortable in the care of Dr Chisti"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr. Christi identified the need of additional testing."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Wouldn't trust anyone else"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I can see that he is concerned as much as I am about my health."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is an amazing physician and person. Feel very blessed to be under his care."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr. Is extremely compassionate and highly professional as well as a terrific doctor."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Take his time with patients."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti is always an outstanding physician to communicate with. I feel cared for and heard!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I think he is a wonderful doctor"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He’s the very best in the medical field"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Very excellent doctor he’s the best"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He explains everything and goes over chart with me"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr. C. Listens to you and answers all your questions .I wish more doctors would be more like him."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is kind, thorough, knowledgeable and attentive. I always learn some new when I see him as he takes the time to answer all my questions and still make me that my interaction with him is a priority."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Has to make sure procedures are ordered as soon as possible"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I’m lucky to have Dr Chisti tracking my health"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is so friendly, kind, and caring. He listens to you and takes his time with you. I have complete faith in him."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Each and every of his patients will have a very high opinion about Dr. Mohammad Chisti how he treats his patients medically or otherwise. Dr. Chisti is an asset to Corewell Health."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I consider myself very fortunate to have Dr. Chisti as my medical oncologist."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Very competent, knowledgeable, caring individual"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I am very glad that he is my doctor!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I was so nervous before I met him and worried about the unknown with this cancer. He put me right at ease. Sleeping better and have a better outlook"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I really like Dr. Chisti, he is very patient and explains things thoroughly. I feel like he generally cares about me and is ordering the correct test to keep my cancer risks low and monitoring my possible reoccurrence very closely. He answers all my questions."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti made you feel that you were the only patient that he had and truly cared"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"If I could able to see dr. without 75 minutes waiting in room I would be happy"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr.Chisti is a very nice and kind man that cares about my health."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Always listens to my concerns and takes time to answer any questions I have. I never feel rushed."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I am so lucky to be a patient of Doctor Chisti he is such an asset to Corewell Health"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr. Chisti is the Best Dr. Ever! Extremely Knowledgeable, cutting Edge, Caring.. listening skills. Wants you to be \" The Healthy You\" God Bless Him...."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"VERY PROFESSIONAL AND TOOK TIME TO EXPLAIN LAB RESULTS"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is through in all aspects. Patient and knowledgeable."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr. Chisti is wonderful. He doesn't give up until I understand what's going on, even if I'm impaired at the time. He saved my life"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Really knowledgeable of how to treat the needs of the patient"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Still waiting to hear back from him"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I was mostly very frustrated by the hour and 40 minute wait to be seen."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He’s a very good doctor. He’s polite and thorough."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti always goes above and beyond to provide the best care to his patients."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He helps me even though I panic with this breast cancer"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He has my total trust he is compassionate and takes of my needs."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti is a fantastic doctor who is well versed in his field of medicine. Takes to time to ensure the patient understands the plan , medications, and test results."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Doctor is easy to talk to and understands everything! He’s perfect!"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Appt at 1:00…didn’t see Dr until about 2:30 & no pt’s in waiting room’s"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"He is a wonderful caring compassionate doctor. We are so blessed and trust him with our health care."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti is very very good. He takes his time explains everything never in a rush l would highly refer him…"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Listened to my concerns and explained plan of care."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"I understand physicians getting behind. I would expect him to give me more time if needed but no update for well over an hour is terrible. I have been moved multiple times either dates or location to accommodate their schedule but my time doesn’t seem as valuable"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr. Chisti explained everything in detail and also provided some statistical graphs for me to see"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Dr Chisti is a wonderful caring doctor very patient and good listener"},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"High level of customer care and personable."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Chisti is a wonderful, caring ,knowledgeable thorough doctor. The best."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"Long wait time to see the doctor."},{"name":"Patient","doctor":"Chisti","rating":null,"date":"","text":"They are were very caring and explained all processes going forward."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"I trust my life in Dr Riaz’s hands. I cant Say that for too many doctors. I thought I was Dying. After working with Dr Riaz I can honestly say my outlook towards my future has completely turned around. I was Expecting her to be done since there is improvement but the root problem has not been found. She is continuing care until that is found. It’s nice to be seen by a doctor. After 4 1/2 years of health issues, she is the first to really look for answers. LOVE HER."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Listened to and informed me sufficiently, came up with a plan for next steps. Fri fly and open. Thorough."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Very compassionate person and very knowledgeable."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"She had reviewed the PET Scan from the previous day prior to visit which was early in the morning."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Dr. Riaz has guided me over 4 years since blood cancer diagnosis. The guidance she provides me for drugs, supplements, diet, etc. have stabilized my condition. I am grateful for having this highest quality of care."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Appreciate the time she spent explaining results from previous tests and plans for future care"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"She put my mind at ease as I have had medical issues for 7 months."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Sara Riaz, explained thoroughly all the options that would best benefit my condition at this time."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Very personal and remembered interaction from hospitalization"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"She took very good care of me but it would have even much better if she had seen me before my release."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Dr. Riaz is wonderful! Love the office staff and nurses."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"After all the Dr's I have seen she seems to be the only one that wants to get to the bottom of my issues"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"I feel that I am being successfully and compassionately cared for."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"She encouraged me to continue to practice healthy habits"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"She checks and treats every abnormality that can be improved."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"She cares about how you are feeling"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"I am glad Dr Riaz is my doctor. I feel very confident in her abilities to help me as needed."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Thank you for your patience."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Sara RIAZ Care’s about you and she reads your blood work with you so you understand what is going on. This lady is absolutely amazing"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"One of the nicest doctors I have ever worked with. I told my wife after that I was confident Dr. Riaz would help me to live longer."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"I’m very comfortable with her and the treatment she gives"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Caring honest not in a hurry"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"New staff members don’t seem to be as dedicated as the senior and more experienced people."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Again Dr.Riaz is very informative and explains when I have questions. She is very pleasant"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Very caring and knowledgeable"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Great job, very professional."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"She was everything I've been looking for and had to go through a terrible experience Cornwell previous Dr to get to the right person with the right help recommendations treatment and answers"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Very pleasant and made me feel comfortable about discussing my issues."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Health issues are always scary for me, especially something with an ongoing nature. Very thankful I fiund Dr riaz to help me through all of this. She helps me understand what’s happening and always listens to my concerns. She prompt and thorough."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Dr Sara was fantastic she explained a great deal about my condition and made sure I understood the problem and the potential treatment she answered all my questions and reassured my concerns."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"I felt we got along very well."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Great Doctor on every level!! Feel very fortunate to have been referred to her by Dr. Zaki."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Easy to understand, addressed all my concerns"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Anything higher than ‘very good’ rating? Dr. Riaz is phenomenal! Her expertise is second to none. I am in a stable state thanks to Dr. Riaz."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Loved Dr. Sara Riaz. She explained everything in detail in a way I could comprehend. She was very friendly, respectful, and knowledgeable. I also found her very compassionate and reassuring."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Great at explaining everything about my care"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Loving kind compassionate caring!!!"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Dr. Riaz is an excellent and caring doctor. I’m always extremely satisfied with the level of care I receive from her."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Dr. Riaz was very helpful in the hospital. She gave me information regarding my test results that I was not aware of during this appointment. She was very kind and supportive."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"She was very interested i in taking care of my needs"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"She really cares and takes her time."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Excellent doctor, I would recommend or highly to any person that I know that needed her type that type of doctor very well mannered I like her very much"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Knowledgeable, very good at explaining technical medical jargon to idiots like me"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"We are very thankful for Dr. Riaz."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"I still have not heard one way or another about the results of my test"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Very concerned about my recent fall and my overall health. Very sincere and professional!!"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Dr. Riaz is very kind, caring and intelligent"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Thank you for taking time to review my case and discuss next steps. I’m comfortable with the plan going forward."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Excellent Doctor!! Her care and communication skills deserve the highest recognition. Her concern for me, a new patient made me feel confident that I will receive the medical treatment that meet my needs and concerns!"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Very talented physician who has cared for me for 3 plus years since diagnosis. Her knowledge is exceptional and her caring, devotion and comforting is appreciated very much. I look forward to seeing Dr. Riaz to continually learn about my disorder and how I need to respond to it. Dr. Riaz is an exceptional person."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"I really feel she is an excellent doctor explains everything very well also listens to all my questions and answers them completely"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Honestly compassionate As I said not fake.. just another patient. But truly interested in YOU"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"As stated before, I am extremely satisfied with Dr. Riaz ana NPR Jessica?, I hope they are my Dr.s for the rest of my life"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Very caring and explained where I understood"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Dr. Riaz is compassionate, knowledgeable and thorough. I trust her."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"SUPER Oncologist…professional in every way"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Brilliant. Patient. Expert level knowledge"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"I have been a patient of Dr Riaz for 8 years, I have complete confidence in her, she treats me with kindness, respect and she cares about me as a person. Thank you Dr Riaz."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"I. Was very happy with her."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Listen to everything I said"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Dr. Riaz is very good at what she does."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Excellent Physician. Places you at ease. Offers practical and achievable health solutions"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Excellent care giver. Her knowledge and expertise is second to none"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"I am just grateful that I found her having cancer and finding a doctor to take time to make sure as a person alone with being a patient that you ok hard to find now days"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Explains everything very well"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"I really appreciate her work"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"She makes you feel very comfortable when talking to her."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Dr Riaz makes you feel comfortable and is able to answer all my questions. She is knowledgeable and her treatment solved my problem."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Dr Riaz is sensitive to our needs, even when they are beyond her specific role. She has done well for us"},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"She showed great concern for me as I'm sure that she does with all her patients. All this research that I did regarding my illness was making me feel a certain way. However, when she explained my condition and told me my plan of care,I was grateful to her. She explained it in a thorough manner."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"Not only is she a wonderful doctor, she's a wonderful person as well. Very caring, compassionate, understanding."},{"name":"Patient","doctor":"Riaz","rating":null,"date":"","text":"As long as I get Dr Riaz, the provider experience is great. When I get stuck with a physician, assistant or nurse practitioner then the provider experience is terrible."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Trying to work though a cancer prognosis is very difficult. I need all the support and knowledge I can receive. The information is vital to the decisions we / I will make. The CT Scans, the PET CT Scans, the MRI's all these images will help in my treatment. All I hope is, to use all this data and make the correct decision for my treatment. My life and the quality of my life depends on those decisions. I like and have confidence in Dr. Shaik."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Clear explanations for future plan"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Took his time. Was clear and co cite."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Very professional and informative!"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Dr. Shaik was very thorough and listed as well as explained things clearly."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"He looked into other questions I had"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Seems to listen to my questions and care about what he is doing. Sometimes a little hard to understand but he repeats if necessary"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"He was very direct and got right to the point! He was great to work with!"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"My doctor was not available due to being on vacation, and I saw Dr. Shaik and he was just as kind and patient as Dr. Riaz! I’m so glad I have a great practice that treats me with dignity and compassion."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Suggesting options to resolve my current issues"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Dozens of blood work item results and no explanation of why they are taken and what do they mean!"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Answered all my questions, put my Mind at ease re low white blood count"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Very caring good dr.knows his field well."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Had a positive prognosis. That was a relief. But he was not just a doctor, but a compassionate human being."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Dr. Shaik is kind and a very good listener."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"We're still getting use to each other."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"I will withhold feedback until my next visit when we discuss results of blood tests."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Good doctor, but had to wait two hours to see him"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Dr. Shaik took the time to explain the problems and resolutions"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Came prepared, explained well, answered all our questions, did not rush through the assessment."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Very honest about my situation"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"He is a great doctor! I am very pleased to be in his care."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"He is very approachable, patient, kind and professional."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Please refer to my detailed comments regarding excessive wait times, both initially and during examinations."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"He took the time to get to know me, was very, kind, thorough & easy to understand."},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Sometimes difficult to understand!"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Dr. Shaik did a great job. It was really hard waiting an hour to see him. I was near ready to leave as my time is worth something too and I simply didn't have the energy after the parking thing"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"I like him and I trust him"},{"name":"Patient","doctor":"Shaik","rating":null,"date":"","text":"Very professional and took the time to answer all my questions"}];
+const PAGE=12;let shown=PAGE,filter="All";
+const grid=document.getElementById('revgrid'),more=document.getElementById('more');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function render(){
+ const list=REVIEWS.filter(r=>filter==="All"||r.doctor===filter);
+ grid.innerHTML=list.slice(0,shown).map(r=>`<div class="card rev">${r.rating?`<div class="stars" aria-label="${r.rating} out of 5">${"★".repeat(r.rating)}${"☆".repeat(5-r.rating)}</div>`:""}<p>${esc(r.text)}</p><small><b>${esc(r.name)}</b> &middot; Dr. ${esc(r.doctor)} ${r.date?" &middot; "+esc(r.date):""}</small></div>`).join("")||"<p>No reviews yet.</p>";
+ more.parentElement.style.display=list.length>shown?"block":"none";
+}
+const docs=["All",...new Set(REVIEWS.map(r=>r.doctor))];
+const fb=document.getElementById('filters');
+fb.innerHTML=docs.map(d=>`<button data-d="${esc(d)}" class="${d==='All'?'on':''}">${d==='All'?'All doctors':'Dr. '+esc(d)}</button>`).join("");
+fb.onclick=e=>{const b=e.target.closest('button');if(!b)return;filter=b.dataset.d;shown=PAGE;fb.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));render();};
+more.onclick=()=>{shown+=PAGE;render();};
+document.getElementById('avg').textContent=REVIEWS.length+' patient comments.';
+document.getElementById('yr').textContent=new Date().getFullYear();
+render();
+</script></body></html>
