@@ -13,12 +13,20 @@ header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line)
 .nav{display:flex;align-items:center;justify-content:space-between;min-height:68px;gap:1rem;flex-wrap:wrap}
 .logo{font-weight:700;color:var(--navy);font-size:1.15rem;text-decoration:none}
 .logo img{height:62px;width:auto;display:block}
-nav a{margin-left:1.2rem;text-decoration:none;color:var(--ink);font-weight:500;font-size:.95rem}
-nav a:hover{color:var(--teal)}
+.menu,.menu ul{list-style:none;margin:0;padding:0}.menu{display:flex;gap:1rem;flex-wrap:wrap}
+.menu a{text-decoration:none;color:var(--ink);font-weight:500;font-size:.95rem;padding:.4rem 0;display:block}
+.dd{position:relative}.dd>ul{display:none;position:absolute;top:100%;left:-.8rem;min-width:210px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,.12);padding:.4rem 0;z-index:20}
+.dd>ul a{padding:.5rem 1rem}.dd:hover>ul,.dd:focus-within>ul{display:block}.dd>a::after{content:" \25BE";font-size:.75em}
+.menu a:hover{color:var(--teal)}
 .btn{display:inline-block;background:var(--teal);color:#fff!important;padding:.75rem 1.4rem;border-radius:6px;text-decoration:none;font-weight:600}
 .btn:hover{background:var(--teal-d)}
+.hdr-call{padding:.6rem 1rem;white-space:nowrap}
+@media (min-width:1000px){.nav{flex-wrap:nowrap}}
 .btn.ghost{background:transparent;border:2px solid #fff}
-.hero{background:linear-gradient(135deg,rgba(18,48,74,.92),rgba(27,74,104,.85)),url(images/hero.jpg) center/cover,#12304a;color:#fff;padding:5rem 0}
+.hero{position:relative;background:linear-gradient(135deg,#12304a,#1b4a68);color:#fff;padding:5rem 0 6.5rem;min-height:460px;overflow:hidden}
+.slides,.slides .s{position:absolute;inset:0}.slides .s{background:center/cover;opacity:0;transition:opacity 1s}.slides .s.on{opacity:1}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,48,74,.94) 0%,rgba(18,48,74,.75) 45%,rgba(18,48,74,.12) 100%)}
+.hero .wrap{position:relative;z-index:1}
 .hero h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.15;margin:0 0 1rem;max-width:18ch}
 .hero p{max-width:55ch;font-size:1.1rem;opacity:.92}
 .hero .btn{margin:.5rem .75rem 0 0}
@@ -28,6 +36,7 @@ h2{font-size:1.9rem;color:var(--navy);margin:0 0 .4rem}
 .lead{color:var(--mute);max-width:60ch;margin:0 0 2rem}
 .grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
 .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:1.4rem}
+#doctors .grid{grid-template-columns:repeat(auto-fit,minmax(310px,1fr))}
 .facts{padding-left:1.1rem;margin:.6rem 0 0;font-size:.92rem;color:var(--mute)}.facts li{margin:.2rem 0}.facts b{color:var(--ink)}
 .card h3{margin:.2rem 0 .3rem;color:var(--navy);font-size:1.1rem}
 .ico{position:relative;width:44px;height:44px;border-radius:50%;background:var(--sky);color:var(--teal);display:grid;place-items:center;font-weight:700;overflow:hidden;margin-bottom:.6rem}.ico::before{content:attr(data-i)}.ico.has{width:100%;height:150px;border-radius:8px}.ico.has::before{content:none}.ico img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -40,23 +49,55 @@ h2{font-size:1.9rem;color:var(--navy);margin:0 0 .4rem}
 .revbar button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
 .more{margin-top:1.5rem;text-align:center}
 .more button{border:2px solid var(--teal);color:var(--teal-d);background:#fff;padding:.6rem 1.4rem;border-radius:6px;font-weight:600;cursor:pointer;font:inherit}
+.quick{margin-top:-3.2rem;position:relative;z-index:2}
+.quick .grid{gap:0;background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(18,48,74,.15);overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.quick a{display:block;padding:1.2rem 1.4rem;text-decoration:none;color:var(--ink);border-right:1px solid var(--line)}
+.quick a:hover{background:var(--sky)}.quick b{display:block;color:var(--navy)}.quick span{color:var(--mute);font-size:.9rem}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.split.noimg{grid-template-columns:1fr}
+.split-img{border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:var(--sky)}
+.split-img img{width:100%;height:100%;object-fit:cover;display:block}
+.ticks{list-style:none;padding:0;margin:1rem 0 0}.ticks li{padding-left:1.6rem;position:relative;margin:.5rem 0}.ticks li::before{content:"\2713";position:absolute;left:0;color:var(--teal);font-weight:700}
+.band{background:linear-gradient(rgba(15,124,134,.9),rgba(11,95,103,.9)),url(images/cta.jpg) center/cover,#0f7c86;color:#fff;text-align:center;padding:3.5rem 0}
+.band h2{color:#fff}.band p{margin:.3rem 0 1.4rem;opacity:.95}.band .btn{background:#fff;color:var(--teal-d)!important}
+.office-img{height:150px;border-radius:8px;overflow:hidden;margin-bottom:.8rem;background:var(--sky)}.office-img img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:760px){.split{grid-template-columns:1fr;gap:1.5rem}.quick{margin-top:-1.2rem}.quick a{border-right:0;border-bottom:1px solid var(--line)}}
+.tiles{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.tile{text-align:center;padding:1.2rem}.tile h3{margin:.2rem 0;color:var(--navy);font-size:1.05rem}.tile p{margin:0;color:var(--mute);font-size:.95rem}
+.steps{counter-reset:s;display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.step{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:10px;padding:1.3rem}.step::before{content:counter(s);display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#fff;font-weight:700;margin-bottom:.6rem}.step h3{margin:.1rem 0 .3rem;color:var(--navy);font-size:1.05rem}.step p{margin:0;color:var(--mute);font-size:.95rem}
+.fcols{display:grid;gap:2rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.fcols h4{color:#fff;margin:0 0 .5rem}.fcols a{display:block;margin:.25rem 0}
 footer{background:var(--navy);color:#cfdde6;padding:2.5rem 0;font-size:.9rem}
 footer a{color:#fff}
 button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-@media (max-width:640px){nav a{margin:0 .8rem 0 0}.nav{padding:.6rem 0}}
+@media (max-width:640px){.menu{gap:.2rem .9rem}.dd>ul{display:none!important}.nav{padding:.6rem 1.25rem}}
 </style></head>
 <body>
 <header><div class="wrap nav">
- <a class="logo" href="#top" aria-label="Cancer Care Associates home"><img src="images/logo.png" alt="Cancer Care Associates"></a>
- <nav><a href="#services">Services</a><a href="#doctors">Our Doctors</a><a href="#reviews">Patient Reviews</a><a href="#contact">Contact</a></nav>
- <a class="btn" href="tel:+12485516900">Call 248-551-6900</a>
+ <a class="logo" href="#top" aria-label="Cancer Care Associates home"><img src="images/logo.jpg" alt="Cancer Care Associates"></a>
+ <nav aria-label="Main"><ul class="menu">
+ <li><a href="#top">Home</a></li>
+ <li class="dd"><a href="#about">About Us</a><ul><li><a href="#about">Our Practice</a></li><li><a href="#services">What We Provide</a></li><li><a href="#different">Why Choose Us</a></li></ul></li>
+ <li><a href="#first-visit">New Patients</a></li>
+ <li class="dd"><a href="#doctors">Our Team</a><ul><li><a href="#doctors">Ishmael Jaiyesimi, DO</a></li><li><a href="#doctors">Joseph M. Anderson, MD</a></li><li><a href="#doctors">Mohammad Muhsin Chisti, MD</a></li><li><a href="#doctors">Sara Sarwar Riaz, MD</a></li><li><a href="#doctors">Mohammed S. Shaik, MD</a></li></ul></li>
+ <li><a href="#resources">Resources</a></li>
+ <li><a href="#reviews">Reviews</a></li>
+ <li><a href="#contact">Contact</a></li>
+</ul></nav>
+ <a class="btn hdr-call" href="tel:+12485516900">248-551-6900</a>
 </div></header>
 
-<div class="hero" id="top"><div class="wrap">
- <h1>Cancer and blood disorder care, close to home.</h1>
+<div class="hero" id="top"><div class="slides" aria-hidden="true"><div class="s on" data-img="images/hero.jpg"></div><div class="s" data-img="images/hero2.jpg"></div><div class="s" data-img="images/hero3.jpg"></div></div><div class="wrap">
+ <h1>Your partner through cancer and blood disorder care.</h1>
  <p>Cancer Care Associates, P.C. provides hematology and oncology care for patients and families in Royal Oak and the surrounding communities.</p>
  <a class="btn" href="#contact">Request an appointment</a><a class="btn ghost" href="#doctors">Meet our doctors</a>
 </div></div>
+
+<div class="quick"><div class="wrap"><div class="grid">
+ <a href="#first-visit"><b>Your first visit</b><span>What to bring and what to expect</span></a>
+ <a href="tel:+12485516900"><b>Schedule an appointment</b><span>Call 248-551-6900</span></a>
+ <a href="#contact"><b>Our location</b><span>3577 W. 13 Mile Rd, Suite 404, Royal Oak</span></a>
+</div></div></div>
 
 <section id="services"><div class="wrap">
  <h2>Our services</h2><p class="lead">Diagnosis, treatment and support for cancer and blood disorders.</p>
@@ -68,17 +109,66 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offse
  </div>
 </div></section>
 
+<section id="about"><div class="wrap split">
+ <div class="split-img"><img src="images/about.jpg" alt="Doctor speaking with a patient" loading="lazy" onerror="this.closest('.split').classList.add('noimg');this.parentNode.remove()"></div>
+ <div>
+  <h2>Care that puts patients first</h2>
+  <p>Cancer Care Associates, P.C. is a hematology and oncology practice in Royal Oak, Michigan. Our team works with each patient and family to plan treatment and provide support at every step.</p>
+  <ul class="ticks"><li>Experienced hematology and oncology physicians</li><li>Treatment plans built around each patient</li><li>A caring, attentive team</li></ul>
+  <p style="margin-top:1.4rem"><a class="btn" href="#contact">Contact our office</a></p>
+ </div>
+</div></section>
+
+<section class="alt" id="different"><div class="wrap">
+ <h2>What makes us different</h2><p class="lead">The way we care for patients and families.</p>
+ <div class="tiles">
+  <div class="card tile"><h3>Clinical trials</h3><p>Access to research studies when they are right for the patient.</p></div>
+  <div class="card tile"><h3>Team approach</h3><p>Physicians and staff working together on every plan of care.</p></div>
+  <div class="card tile"><h3>Clear communication</h3><p>Time to listen, answer questions and explain each option.</p></div>
+  <div class="card tile"><h3>Personal care</h3><p>Treatment plans built around the individual patient.</p></div>
+  <div class="card tile"><h3>Quality focus</h3><p>Care guided by established standards and review.</p></div>
+  <div class="card tile"><h3>Close to home</h3><p>Convenient care in Royal Oak, Michigan.</p></div>
+ </div>
+</div></section>
+
+<section id="first-visit"><div class="wrap">
+ <h2>Your first visit</h2><p class="lead">A new diagnosis can feel overwhelming. Here is what to expect.</p>
+ <div class="steps">
+  <div class="step"><h3>Call our office</h3><p>Phone 248-551-6900 to schedule. Ask any questions about the process.</p></div>
+  <div class="step"><h3>Gather your records</h3><p>Bring recent test results, scans, pathology reports and a list of medicines.</p></div>
+  <div class="step"><h3>Bring a support person</h3><p>A family member or friend can listen and take notes with you.</p></div>
+  <div class="step"><h3>Meet your doctor</h3><p>Your doctor reviews your history and explains the next steps.</p></div>
+ </div>
+</div></section>
+
 <section class="alt" id="doctors"><div class="wrap">
  <h2>Meet our doctors</h2><p class="lead">Experienced physicians focused on every patient's care.</p>
  <div class="grid">
+    <div class="card"><div class="photo" data-i="IJ"><img src="images/jaiyesimi.jpg" alt="Ishmael Jaiyesimi, DO" loading="lazy" onerror="this.remove()"></div><h3>Ishmael Jaiyesimi, DO</h3><div class="role">Cellular Therapy, Hematology and Oncology</div><ul class="facts"><li><b>Medical school:</b> Western University of Health Sciences, College of Osteopathic Medicine of the Pacific (DO), 1986</li><li><b>Residency:</b> Bi-County Community Hospital, 1987; Internal Medicine, Beaumont Hospital, 1990</li><li><b>Fellowship:</b> Hematology and Oncology, University of Texas M.D. Anderson Cancer Center, 1993</li><li><b>Board certified:</b> Internal Medicine (1990), Medical Oncology (1993), Hematology (1996), American Board of Internal Medicine</li></ul></div>
+  <div class="card"><div class="photo" data-i="JA"><img src="images/anderson.jpg" alt="Joseph M. Anderson, MD" loading="lazy" onerror="this.remove()"></div><h3>Joseph M. Anderson, MD</h3><div class="role">Hematology and Oncology</div><ul class="facts"><li><b>Medical school:</b> University of Michigan Medical School (MD), 1982</li><li><b>Residency:</b> Internal Medicine, Henry Ford Hospital, 1986</li><li><b>Fellowship:</b> Oncology, Henry Ford Hospital, 1988</li><li><b>Board certified:</b> Internal Medicine (1985), Medical Oncology (1989), Hematology (1989), American Board of Internal Medicine</li></ul></div>
   <div class="card"><div class="photo" data-i="MC"><img src="images/chisti.jpg" alt="Dr. Mohammad Muhsin Chisti" loading="lazy" onerror="this.remove()"></div><h3>Mohammad Muhsin Chisti, MD</h3><div class="role">Hematology and Medical Oncology</div>
    <p>Dr. Chisti is an Associate Professor of Internal Medicine at Oakland University William Beaumont School of Medicine, where he teaches medical students and residents. He has taken part in many clinical trials in breast, gastrointestinal and prostate cancers and multiple myeloma.</p>
    <ul class="facts"><li><b>Medical school:</b> Government Medical College, Srinagar, India</li><li><b>Residency:</b> Internal Medicine, University at Buffalo</li><li><b>Fellowship:</b> Hematology and Oncology, William Beaumont Hospital</li><li><b>Board certified:</b> Internal Medicine, Medical Oncology, Hematology</li><li><b>Recognition:</b> Hour Detroit Top Doc in Hematology and Oncology, 2018 to 2023</li><li><b>Memberships:</b> ASCO, ASH, American College of Physicians (Fellow)</li></ul>
   </div>
-  <div class="card"><div class="photo" data-i="SR"><img src="images/riaz.jpg" alt="Dr. Sara S. Riaz" loading="lazy" onerror="this.remove()"></div><h3>Sara S. Riaz, [Credentials]</h3><div class="role">[Specialty]</div><p>[Short bio, education, board certification.]</p></div>
-  <div class="card"><div class="photo" data-i="MS"><img src="images/shaik.jpg" alt="Dr. Mohammed S. Shaik" loading="lazy" onerror="this.remove()"></div><h3>Mohammed S. Shaik, [Credentials]</h3><div class="role">[Specialty]</div><p>[Short bio, education, board certification.]</p></div>
+  <div class="card"><div class="photo" data-i="SR"><img src="images/riaz.jpg" alt="Sara Sarwar Riaz, MD" loading="lazy" onerror="this.remove()"></div><h3>Sara Sarwar Riaz, MD</h3><div class="role">Hematology and Medical Oncology</div><p>Dr. Riaz is an Assistant Professor at Oakland University William Beaumont School of Medicine and mentors residents and fellows on the consult service.</p><ul class="facts"><li><b>Medical school:</b> Ayub Medical College, Abbottabad, Pakistan, 2004</li><li><b>Residency:</b> Internal Medicine, Henry Ford Providence Southfield Hospital, 2011</li><li><b>Fellowship:</b> Hematology and Oncology, Henry Ford Providence Southfield Hospital, 2014</li><li><b>Board certified:</b> Internal Medicine (2011), Hematology (2014), Medical Oncology (2014), American Board of Internal Medicine</li><li><b>Recognition:</b> First place, national poster presentation, American College of Physicians, 2011</li><li><b>Memberships:</b> American College of Physicians, American Society of Hematology</li></ul></div>
+  <div class="card"><div class="photo" data-i="MS"><img src="images/shaik.jpg" alt="Mohammed S. Shaik, MD" loading="lazy" onerror="this.remove()"></div><h3>Mohammed S. Shaik, MD</h3><div class="role">Hematology and Medical Oncology</div><ul class="facts"><li><b>Medical school:</b> NTR University of Health Sciences, Vijayawada Osmania Medical College (MBBS), 2001</li><li><b>Residency:</b> Internal Medicine, Hurley Medical Center, 2008</li><li><b>Fellowship:</b> Hematology and Oncology, Michigan State University, 2016</li><li><b>Board certified:</b> Internal Medicine (2008), Hematology (2016), Medical Oncology (2016), American Board of Internal Medicine</li></ul></div>
  </div>
 </div></section>
+
+<section id="resources"><div class="wrap">
+ <h2>Patient resources</h2><p class="lead">Trusted organizations for information and support.</p>
+ <div class="grid">
+  <a class="card" href="https://www.cancer.org" target="_blank" rel="noopener"><h3>American Cancer Society</h3><p>Guides on cancer types, treatment and support services.</p></a>
+  <a class="card" href="https://www.cancer.gov" target="_blank" rel="noopener"><h3>National Cancer Institute</h3><p>Research-based information on cancer and clinical trials.</p></a>
+  <a class="card" href="https://www.cancer.net" target="_blank" rel="noopener"><h3>Cancer.Net</h3><p>Patient information from the American Society of Clinical Oncology.</p></a>
+  <a class="card" href="https://www.lls.org" target="_blank" rel="noopener"><h3>Leukemia &amp; Lymphoma Society</h3><p>Support and education for blood cancer patients.</p></a>
+ </div>
+</div></section>
+
+<div class="band"><div class="wrap">
+ <h2>Need to see a specialist?</h2><p>Call our office to schedule an appointment.</p>
+ <a class="btn" href="tel:+12485516900">Call 248-551-6900</a>
+</div></div>
 
 <section id="reviews"><div class="wrap">
  <h2>What our patients say</h2>
@@ -89,14 +179,21 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offse
 </div></section>
 
 <section class="alt" id="contact"><div class="wrap">
- <h2>Contact and locations</h2><p class="lead">[Hours: Mon to Fri, 8 am to 5 pm]</p>
+ <h2>Contact and locations</h2><p class="lead">Call our office to schedule an appointment.</p>
  <div class="grid">
-  <div class="card"><h3>Cancer Care Associates, P.C.</h3><p>3577 W. 13 Mile Rd, Suite 404<br>Royal Oak, MI 48073<br>Phone: <a href="tel:+12485516900">248-551-6900</a><br>Fax: 248-551-6909</p><p><a href="https://www.google.com/maps/search/?api=1&query=3577+W+13+Mile+Rd+Suite+404+Royal+Oak+MI+48073" target="_blank" rel="noopener">Get directions</a></p></div>
-  <div class="card"><h3>New patients</h3><p>[Insurance accepted, how to refer, what to bring.]</p><a class="btn" href="tel:+12485516900">Call to schedule</a></div>
+  <div class="card"><div class="office-img"><img src="images/office.jpg" alt="Our office" loading="lazy" onerror="this.parentNode.remove()"></div><h3>Cancer Care Associates, P.C.</h3><p>3577 W. 13 Mile Rd, Suite 404<br>Royal Oak, MI 48073<br>Phone: <a href="tel:+12485516900">248-551-6900</a><br>Fax: 248-551-6909</p><p><a href="https://www.google.com/maps/search/?api=1&query=3577+W+13+Mile+Rd+Suite+404+Royal+Oak+MI+48073" target="_blank" rel="noopener">Get directions</a></p></div>
+  <div class="card"><h3>New patients</h3><p>Call our office to schedule your first visit. See &ldquo;Your first visit&rdquo; above for what to bring.</p><a class="btn" href="tel:+12485516900">Call to schedule</a></div>
  </div>
 </div></section>
 
-<footer><div class="wrap">&copy; <span id="yr"></span> Cancer Care Associates, P.C. This website does not provide medical advice. In an emergency, call 911.</div></footer>
+<footer><div class="wrap">
+ <div class="fcols">
+  <div><h4>Cancer Care Associates, P.C.</h4>3577 W. 13 Mile Rd, Suite 404<br>Royal Oak, MI 48073<br>Phone: 248-551-6900<br>Fax: 248-551-6909</div>
+  <div><h4>Quick links</h4><a href="#about">About Us</a><a href="#first-visit">New Patients</a><a href="#doctors">Our Team</a><a href="#resources">Patient Resources</a><a href="#contact">Contact</a></div>
+  
+ </div>
+ <p style="margin-top:1.5rem">&copy; <span id="yr"></span> Cancer Care Associates, P.C. This website does not provide medical advice. In an emergency, call 911.</p>
+</div></footer>
 
 <script>
 /* ====== EDIT REVIEWS HERE ======
@@ -117,6 +214,10 @@ fb.innerHTML=docs.map(d=>`<button data-d="${esc(d)}" class="${d==='All'?'on':''}
 fb.onclick=e=>{const b=e.target.closest('button');if(!b)return;filter=b.dataset.d;shown=PAGE;fb.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));render();};
 more.onclick=()=>{shown+=PAGE;render();};
 document.getElementById('avg').textContent=REVIEWS.length+' patient comments.';
+(function(){const sl=[...document.querySelectorAll('.slides .s')];let ok=[],i=0;
+ sl.forEach(el=>{const im=new Image();im.onload=()=>{el.style.backgroundImage='url('+el.dataset.img+')';ok.push(el);if(ok.length===1)el.classList.add('on')};im.src=el.dataset.img});
+ sl.forEach(el=>el.classList.remove('on'));
+ setInterval(()=>{if(ok.length<2)return;ok[i%ok.length].classList.remove('on');i++;ok[i%ok.length].classList.add('on')},6000)})();
 document.getElementById('yr').textContent=new Date().getFullYear();
 render();
 </script></body></html>
